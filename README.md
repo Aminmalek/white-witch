@@ -24,3 +24,13 @@ WhiteWitch is a lightweight in-memory cache system implemented in pure Python. I
    ```bash
    git clone https://github.com/yourusername/whitewitch.git
    cd whitewitch
+   python3 main.py
+
+## **Code Structure**
+
+whitewitch/
+│
+├── cache_service.py        # Implements the cache service logic
+├── avltree.py              # Implements the AVL tree structure with TTL
+├── main.py                 # Example usage of the cache service
+├── README.md               # Documentation for the project
