@@ -63,27 +63,7 @@ class AVLTree:
             node.ttl = datetime.now() + timedelta(seconds=ttl) if ttl else node.ttl
             return node
 
-        self._update_height(node)
-
-        balance = self._get_balance(node)
-
-        # Left-Left case
-        if balance > 1 and key < node.left.key:
-            return self._rotate_right(node)
-
-        # Right-Right case
-        if balance < -1 and key > node.right.key:
-            return self._rotate_left(node)
-
-        # Left-Right case
-        if balance > 1 and key > node.left.key:
-            node.left = self._rotate_left(node.left)
-            return self._rotate_right(node)
-
-        # Right-Left case
-        if balance < -1 and key < node.right.key:
-            node.right = self._rotate_right(node.right)
-            return self._rotate_left(node)
+        self._rebalance_node(node)
 
         return node
 
@@ -120,10 +100,18 @@ class AVLTree:
             node.value = min_larger_node.value
             node.ttl = min_larger_node.ttl
             node.right = self._delete_node(node.right, min_larger_node.key)
+        self._rebalance_node(node)
 
+        return node
+
+    def _get_min(self, node: AVLNode) -> AVLNode:
+        while node.left:
+            node = node.left
+        return node
+
+    def _rebalance_node(self, node: AVLNode) -> AVLNode:
         self._update_height(node)
 
-        # Rebalance the node
         balance = self._get_balance(node)
 
         # Left-Left case
@@ -144,9 +132,4 @@ class AVLTree:
             node.right = self._rotate_right(node.right)
             return self._rotate_left(node)
 
-        return node
-
-    def _get_min(self, node: AVLNode) -> AVLNode:
-        while node.left:
-            node = node.left
         return node
